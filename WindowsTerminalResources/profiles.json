@@ -1,14 +1,9 @@
-
 // To view the default settings, hold "alt" while clicking on the "Settings" button.
 // For documentation on these settings, see: https://aka.ms/terminal-documentation
-
 {
     "$schema": "https://aka.ms/terminal-profiles-schema",
-
     "defaultProfile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
-
-    "profiles":
-    [
+    "profiles": [
         {
             // Make changes here to the powershell.exe profile
             "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
@@ -41,7 +36,6 @@
             "source": "Windows.Terminal.Azure"
         }
     ],
-
     // Add custom color schemes to this array
     "schemes": [
         {
@@ -75,7 +69,7 @@
             "purple": "#df95ff",
             "cyan": "#03edf9",
             "white": "#ffffff",
-            "brightBlack": "#000000",
+            "brightBlack": "#767676",
             "brightRed": "#fe4450",
             "brightGreen": "#72f1b8",
             "brightYellow": "#fede5d",
@@ -88,8 +82,14 @@
             "selectionBackground": "#34294F"
         }
     ],
-
     // Add any keybinding overrides to this array.
     // To unbind a default keybinding, set the command to "unbound"
-    "keybindings": []
+    "keybindings": [
+        {
+            "command": "copy",
+            "keys": [
+                "ctrl+c"
+            ]
+        }
+    ]
 }
