@@ -12,10 +12,6 @@ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process
 #     $returnedPrompt
 # }
 
-function Update-PSVersion {
-    iex "& { $(irm https://aka.ms/install-powershell.ps1) } -UseMSI -Preview"
-}
-
 $global:forePromptColor = 0
 $global:leftArrow = [char]0xe0b2
 $global:rightArrow = [char]0xe0b0
@@ -27,7 +23,7 @@ $global:prompt = ''
 [System.Collections.Generic.List[ScriptBlock]]$global:PromptRight = @(
     # right aligned
     { "$fore;${errorColor}m{0}" -f $leftArrow }
-    { "$fore;${forePromptColor}m$back;${errorColor}m{0}" -f $(if (@(get-history).Count -gt 0) {(get-history)[-1] | % { "{0:c}" -f (new-timespan $_.StartExecutionTime $_.EndExecutionTime)}}else {'00:00:00.0000000'}) }
+    { "$fore;${forePromptColor}m$back;${errorColor}m{0}" -f $(if (@(get-history).Count -gt 0) { (get-history)[-1] | % { "{0:c}" -f (new-timespan $_.StartExecutionTime $_.EndExecutionTime) } }else { '00:00:00.0000000' }) }
     
     { "$fore;7m$back;${errorColor}m{0}" -f $leftArrow }
     { "$fore;0m$back;7m{0}" -f $(get-date -format "hh:mm:ss tt") }
@@ -47,8 +43,8 @@ $global:prompt = ''
     { "$back;14m$fore;${forePromptColor}m{0}$esc[0m" -f $(Split-Path $pwd -leaf) }
 )
 function global:prompt {
-    $global:errorColor = if ($?) {22} else {1}
-    $global:platformColor = if ($isWindows) {11} else {117}
+    $global:errorColor = if ($?) { 22 } else { 1 }
+    $global:platformColor = if ($isWindows) { 11 } else { 117 }
         
     $gitTest = $(git config -l) -match 'branch\.'
     if (-not [string]::IsNullOrEmpty($gitTest)) {
@@ -67,8 +63,8 @@ function global:prompt {
             $behind = [regex]::matches($aheadbehind, '(?<=behind\s)\d+').value
     
             $distance = "$back;15m$fore;${arrowfg}m{0}$esc[0m" -f $rightArrow
-            if ($ahead) {$distance += "$back;15m$fore;${forePromptColor}m{0}$esc[0m" -f "a$ahead"}
-            if ($behind) {$distance += "$back;15m$fore;${forePromptColor}m{0}$esc[0m" -f "b$behind"}
+            if ($ahead) { $distance += "$back;15m$fore;${forePromptColor}m{0}$esc[0m" -f "a$ahead" }
+            if ($behind) { $distance += "$back;15m$fore;${forePromptColor}m{0}$esc[0m" -f "b$behind" }
             $distance += "$fore;15m{0}$esc[0m" -f $rightArrow
         }
         else {
@@ -80,10 +76,10 @@ function global:prompt {
             { "$back;${branchbg}m$fore;${forePromptColor}m{0}$esc[0m" -f $branch }
             { "{0}$esc[0m" -f $distance }
         )
-        $leftSide = -join @($global:PromptLeft + $gitPrompt + {" "}).Invoke()
+        $leftSide = -join @($global:PromptLeft + $gitPrompt + { " " }).Invoke()
     }
     else {
-        $leftSide = -join @($global:PromptLeft + { "$fore;14m{0}$esc[0m" -f $rightArrow } + {" "}).Invoke()
+        $leftSide = -join @($global:PromptLeft + { "$fore;14m{0}$esc[0m" -f $rightArrow } + { " " }).Invoke()
     }
     
     $rightSide = -join ($global:promptRight).Invoke()
@@ -92,8 +88,12 @@ function global:prompt {
     $prompt
 }
 
-if(-not (Get-Module -Name Terminal-Icons -ListAvailable)) {
+if (-not (Get-Module -Name Terminal-Icons -ListAvailable)) {
     Install-Module -Name Terminal-Icons -Scope CurrentUser
 }
 
 Import-Module -Name Terminal-Icons
+
+if (Test-Path "$env:USERPROFILE\source\repos") {
+    Set-Location "$env:USERPROFILE\source\repos"
+}
