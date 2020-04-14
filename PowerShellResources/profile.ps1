@@ -92,6 +92,10 @@ if (-not (Get-Module -Name Terminal-Icons -ListAvailable)) {
     Install-Module -Name Terminal-Icons -Scope CurrentUser
 }
 
+if (-not (Get-Module -Name posh-git -ListAvailable)) {
+    Install-Module -Name posh-git -Scope CurrentUser
+}
+
 Import-Module -Name Terminal-Icons
 
 if (Test-Path "$env:USERPROFILE\source\repos") {
