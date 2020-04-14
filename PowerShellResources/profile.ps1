@@ -97,6 +97,7 @@ if (-not (Get-Module -Name posh-git -ListAvailable)) {
 }
 
 Import-Module -Name Terminal-Icons
+Import-Module -Name posh-git
 
 if (Test-Path "$env:USERPROFILE\source\repos") {
     Set-Location "$env:USERPROFILE\source\repos"
