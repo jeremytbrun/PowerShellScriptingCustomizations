@@ -1,0 +1,26 @@
+#oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/atomic.omp.json' | Invoke-Expression
+#oh-my-posh init pwsh --config 'https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/jandedobbeleer.omp.json' | Invoke-Expression
+oh-my-posh init pwsh --config 'https://gist.githubusercontent.com/jeremytbrun/gitlink/prompt.json' | Invoke-Expression
+
+if (-not (Get-Module -Name Terminal-Icons -ListAvailable)) {
+    Install-Module -Name Terminal-Icons -Scope CurrentUser
+}
+
+if (-not (Get-Module -Name posh-git -ListAvailable)) {
+    Install-Module -Name posh-git -Scope CurrentUser
+}
+
+if (-not (Get-Module -Name VSTeam -ListAvailable)) {
+    Install-Module -Name posh-git -Scope CurrentUser
+}
+
+$env:VSTEAM_NO_MODULE_MESSAGES = $true
+$PersonalAccessToken = ""
+Set-VSTeamAccount -Account "" -PersonalAccessToken $PersonalAccessToken -Drive "" | Invoke-Expression | Out-Null
+
+Import-Module -Name Terminal-Icons
+Import-Module -Name posh-git
+
+if (Test-Path "$env:USERPROFILE\source\repos") {
+    Set-Location "$env:USERPROFILE\source\repos"
+}
